@@ -13,6 +13,13 @@
 #include <string.h>
 #include <unistd.h>
 
+// Fix undeclared function 'gettid' on Ubuntu18
+#ifndef SYS_gettid
+#error "SYS_gettid unavailable on this system"
+#endif
+
+#define gettid() ((pid_t)syscall(SYS_gettid))
+
 static int prof_mapping_containing_addr(
     uintptr_t addr,
     const char* maps_path,
